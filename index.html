@@ -34,6 +34,7 @@
     <button id="submit-batch-button">submit</button>
   </div>
 </div>
+<div id="download-all-container"></div>
 <div id="qr-list" class="qr-list"></div>
 <script type="text/javascript">
   document.getElementById("submit-button").addEventListener("click", addNewQr);
@@ -41,15 +42,13 @@
     .getElementById("submit-batch-button")
     .addEventListener("click", batchUpload);
   var qrLocation = 1;
+  var allSources = [];
 
   function batchUpload(e) {
-    console.log("batch");
     var file = document.getElementById("batch-upload");
     var input = file.files[0];
     const reader = new FileReader();
-    console.log("document normal:", document);
     reader.onload = function (e) {
-      console.log("document within onload:", document);
       const lines = e.target.result.split("\n");
       lines.forEach((line) => {
         const rows = line.split(",");
@@ -57,12 +56,10 @@
           const title = rows[0];
           const url = rows[1];
           const color = rows[2].replace("\r", "");
-          console.log("title:", title, "url:", url, "color:", color);
 
           makeQrCode(url, title, color);
         }
       });
-      console.log("text:", lines);
     };
     reader.readAsText(input);
   }
@@ -74,7 +71,28 @@
 
     makeQrCode(url, title, color);
   }
+  function makeDownloadAllButton() {
+    var downloadAllButton = document.createElement("button");
+    downloadAllButton.setAttribute("id", "download-all");
+    var downloadAllText = document.createTextNode("Download all");
+    downloadAllButton.appendChild(downloadAllText);
+    document
+      .getElementById("download-all-container")
+      .appendChild(downloadAllButton);
+
+    downloadAllButton.addEventListener("click", function () {
+      for (let i = 1; i < qrLocation; i++) {
+        const button = document.getElementById(`qr-button-${i}`);
+        button.click();
+      }
+    });
+  }
   function makeQrCode(url, title, color) {
+    var downloadAll = document.getElementById("download-all");
+    if (downloadAll === null) {
+      makeDownloadAllButton();
+    }
+
     var titleElement = document.createTextNode(title);
 
     var qrElement = document.createElement("div");
@@ -92,6 +110,25 @@
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H,
     });
+
+    var button = document.createElement("button");
+    const currentQrLocation = qrLocation;
+    button.setAttribute("id", `qr-button-${qrLocation}`);
+    button.addEventListener("click", function () {
+      var src = qrElement.children[1].getAttribute("src");
+      var link = document.createElement("a");
+      link.href = src;
+      link.download = `${title}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+    var text = document.createTextNode("Download");
+    button.appendChild(text);
+    qrElement.appendChild(button);
+
+    const source = qrElement.children[1].getAttribute("src");
+    allSources.push({ source, title });
     qrLocation++;
   }
 </script>
