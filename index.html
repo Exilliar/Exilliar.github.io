@@ -1,1 +1,94 @@
-Hello World
+<!-- /* Load the library */ -->
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+<!-- /* Basic and simple one */ -->
+<div id="qrcode"></div>
+<!-- <script type="text/javascript">
+new QRCode(document.getElementById("qrcode"), "https://webisora.com");
+</script> -->
+
+<!-- /*With some options*/ -->
+<title>Amazing qr code generator</title>
+<div id="qrcode-2"></div>
+<div class="form">
+  <div class="label-input">
+    <label for="site-title">Title</label>
+    <input id="site-title" type="text" />
+  </div>
+  <div class="label-input">
+    <label for="site-url">Url</label>
+    <input id="site-url" type="text" aria-label="site name" />
+  </div>
+  <div class="label-input">
+	<label for="qr-color">Color</label>
+	<input id="qr-color" type="color" />
+  </div>
+  <button id="submit-button">submit</button>
+</div>
+<div id="qr-list" class="qr-list">
+  <div id="qrcode-3" class="qr-value"></div>
+</div>
+<script type="text/javascript">
+  // var qrcode = new QRCode(document.getElementById("qrcode-2"), {
+  // 	text: "https://webisora.com",
+  // 	width: 128,
+  // 	height: 128,
+  // 	colorDark : "#5868bf",
+  // 	colorLight : "#ffffff",
+  // 	correctLevel : QRCode.CorrectLevel.H
+  // });
+
+  document.getElementById("submit-button").addEventListener("click", addNewQr);
+  var qrLocation = 3;
+
+  function addNewQr(e) {
+	var color = document.getElementById("qr-color").value;
+	console.log("color:", color);
+    var url = document.getElementById("site-url").value;
+    console.log("url:", url);
+    var qrElement = document.getElementById(`qrcode-${qrLocation}`);
+    var title = document.createTextNode(
+      document.getElementById("site-title").value
+    );
+    qrElement.appendChild(title);
+    var qrcode = new QRCode(qrElement, {
+      text: url,
+      width: 128,
+      width: 128,
+      height: 128,
+      colorDark: color,
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+    qrLocation++;
+    var newElement = document.createElement("div");
+    newElement.setAttribute("id", `qrcode-${qrLocation}`);
+    newElement.setAttribute("class", "qr-value");
+    console.log("newElement:", newElement);
+    // var qrList = document.getElementById()
+    document.getElementById("qr-list").appendChild(newElement);
+  }
+</script>
+
+<style>
+  .qr-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .qr-value {
+    padding: 1rem;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    height: 15vh;
+  }
+  .label-input {
+	display: flex;
+	flex-direction: column;
+  }
+</style>
