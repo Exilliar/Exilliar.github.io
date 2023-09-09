@@ -1,56 +1,88 @@
 <!-- /* Load the library */ -->
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!-- /* Basic and simple one */ -->
 <div id="qrcode"></div>
-<!-- <script type="text/javascript">
-new QRCode(document.getElementById("qrcode"), "https://webisora.com");
-</script> -->
 
 <!-- /*With some options*/ -->
 <title>Amazing qr code generator</title>
 <div id="qrcode-2"></div>
-<div class="form">
-  <div class="label-input">
-    <label for="site-title">Title</label>
-    <input id="site-title" type="text" />
+<div class="top-page">
+  <div class="form">
+    <div class="label-input">
+      <label for="site-title">Title</label>
+      <input id="site-title" type="text" />
+    </div>
+    <div class="label-input">
+      <label for="site-url">Url</label>
+      <input id="site-url" type="text" aria-label="site name" />
+    </div>
+    <div class="label-input">
+      <label for="qr-color">Color</label>
+      <input id="qr-color" type="color" />
+    </div>
+    <button id="submit-button">submit</button>
   </div>
-  <div class="label-input">
-    <label for="site-url">Url</label>
-    <input id="site-url" type="text" aria-label="site name" />
+  <div class="form">
+    <p>Batch upload</p>
+    <p>Example csv: <a href="./example.csv" download>example.csv</a></p>
+    <div class="label-input">
+      <label for="batch-upload">Csv file</label>
+      <input type="file" id="batch-upload" />
+    </div>
+    <button id="submit-batch-button">submit</button>
   </div>
-  <div class="label-input">
-	<label for="qr-color">Color</label>
-	<input id="qr-color" type="color" />
-  </div>
-  <button id="submit-button">submit</button>
 </div>
-<div id="qr-list" class="qr-list">
-  <div id="qrcode-3" class="qr-value"></div>
-</div>
+<div id="qr-list" class="qr-list"></div>
 <script type="text/javascript">
-  // var qrcode = new QRCode(document.getElementById("qrcode-2"), {
-  // 	text: "https://webisora.com",
-  // 	width: 128,
-  // 	height: 128,
-  // 	colorDark : "#5868bf",
-  // 	colorLight : "#ffffff",
-  // 	correctLevel : QRCode.CorrectLevel.H
-  // });
-
   document.getElementById("submit-button").addEventListener("click", addNewQr);
-  var qrLocation = 3;
+  document
+    .getElementById("submit-batch-button")
+    .addEventListener("click", batchUpload);
+  var qrLocation = 1;
+
+  function batchUpload(e) {
+    console.log("batch");
+    var file = document.getElementById("batch-upload");
+    var input = file.files[0];
+    const reader = new FileReader();
+    console.log("document normal:", document);
+    reader.onload = function (e) {
+      console.log("document within onload:", document);
+      const lines = e.target.result.split("\n");
+      lines.forEach((line) => {
+        const rows = line.split(",");
+        if (rows[0] !== "title") {
+          const title = rows[0];
+          const url = rows[1];
+          const color = rows[2].replace("\r", "");
+          console.log("title:", title, "url:", url, "color:", color);
+
+          makeQrCode(url, title, color);
+        }
+      });
+      console.log("text:", lines);
+    };
+    reader.readAsText(input);
+  }
 
   function addNewQr(e) {
-	var color = document.getElementById("qr-color").value;
-	console.log("color:", color);
+    var color = document.getElementById("qr-color").value;
     var url = document.getElementById("site-url").value;
-    console.log("url:", url);
-    var qrElement = document.getElementById(`qrcode-${qrLocation}`);
-    var title = document.createTextNode(
-      document.getElementById("site-title").value
-    );
-    qrElement.appendChild(title);
+    var title = document.getElementById("site-title").value;
+
+    makeQrCode(url, title, color);
+  }
+  function makeQrCode(url, title, color) {
+    var titleElement = document.createTextNode(title);
+
+    var qrElement = document.createElement("div");
+    qrElement.setAttribute("id", `qrcode-${qrLocation}`);
+    qrElement.setAttribute("class", "qr-value");
+    document.getElementById("qr-list").appendChild(qrElement);
+
+    qrElement.appendChild(titleElement);
     var qrcode = new QRCode(qrElement, {
       text: url,
       width: 128,
@@ -61,12 +93,6 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
       correctLevel: QRCode.CorrectLevel.H,
     });
     qrLocation++;
-    var newElement = document.createElement("div");
-    newElement.setAttribute("id", `qrcode-${qrLocation}`);
-    newElement.setAttribute("class", "qr-value");
-    console.log("newElement:", newElement);
-    // var qrList = document.getElementById()
-    document.getElementById("qr-list").appendChild(newElement);
   }
 </script>
 
@@ -78,17 +104,35 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
     justify-content: space-around;
   }
   .qr-value {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
   }
   .form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 25%;
-    height: 15vh;
+    width: 45%;
+    min-width: 5.625rem;
+    min-height: 10rem;
+    height: 20vh;
   }
   .label-input {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (min-width: 400px) {
+    .top-page {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .top-page {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 </style>
