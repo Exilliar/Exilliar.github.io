@@ -1,5 +1,6 @@
 <!-- /* Load the library */ -->
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!-- /* Basic and simple one */ -->
 <div id="qrcode"></div>
@@ -20,33 +21,24 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
     <input id="site-url" type="text" aria-label="site name" />
   </div>
   <div class="label-input">
-	<label for="qr-color">Color</label>
-	<input id="qr-color" type="color" />
+    <label for="qr-color">Color</label>
+    <input id="qr-color" type="color" />
   </div>
   <button id="submit-button">submit</button>
 </div>
-<div id="qr-list" class="qr-list">
-  <div id="qrcode-3" class="qr-value"></div>
-</div>
+<div id="qr-list" class="qr-list"></div>
 <script type="text/javascript">
-  // var qrcode = new QRCode(document.getElementById("qrcode-2"), {
-  // 	text: "https://webisora.com",
-  // 	width: 128,
-  // 	height: 128,
-  // 	colorDark : "#5868bf",
-  // 	colorLight : "#ffffff",
-  // 	correctLevel : QRCode.CorrectLevel.H
-  // });
-
   document.getElementById("submit-button").addEventListener("click", addNewQr);
-  var qrLocation = 3;
+  var qrLocation = 1;
 
   function addNewQr(e) {
-	var color = document.getElementById("qr-color").value;
-	console.log("color:", color);
+    var qrElement = document.createElement("div");
+    qrElement.setAttribute("id", `qrcode-${qrLocation}`);
+    qrElement.setAttribute("class", "qr-value");
+    document.getElementById("qr-list").appendChild(qrElement);
+
+    var color = document.getElementById("qr-color").value;
     var url = document.getElementById("site-url").value;
-    console.log("url:", url);
-    var qrElement = document.getElementById(`qrcode-${qrLocation}`);
     var title = document.createTextNode(
       document.getElementById("site-title").value
     );
@@ -61,12 +53,6 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
       correctLevel: QRCode.CorrectLevel.H,
     });
     qrLocation++;
-    var newElement = document.createElement("div");
-    newElement.setAttribute("id", `qrcode-${qrLocation}`);
-    newElement.setAttribute("class", "qr-value");
-    console.log("newElement:", newElement);
-    // var qrList = document.getElementById()
-    document.getElementById("qr-list").appendChild(newElement);
   }
 </script>
 
@@ -78,6 +64,8 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
     justify-content: space-around;
   }
   .qr-value {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
   }
   .form {
@@ -85,10 +73,12 @@ new QRCode(document.getElementById("qrcode"), "https://webisora.com");
     flex-direction: column;
     justify-content: space-between;
     width: 25%;
+    min-width: 5.625rem;
+    min-height: 10rem;
     height: 15vh;
   }
   .label-input {
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
 </style>
