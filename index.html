@@ -34,7 +34,7 @@
     <button id="submit-batch-button">submit</button>
   </div>
 </div>
-<div id="download-all-container"></div>
+<div id="download-all-container" class="download-all-container"></div>
 <div id="qr-list" class="qr-list"></div>
 <script type="text/javascript">
   document.getElementById("submit-button").addEventListener("click", addNewQr);
@@ -157,6 +157,13 @@
   .label-input {
     display: flex;
     flex-direction: column;
+  }
+
+  .download-all-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
   }
 
   @media screen and (min-width: 400px) {
