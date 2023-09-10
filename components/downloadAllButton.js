@@ -1,6 +1,6 @@
 function downloadAllButtonComponent() {
   var container = document.createElement("div");
-  container.setAttribute("class", "col-2");
+  container.setAttribute("style", "width: auto !important;");
 
   var downloadAllButton = document.createElement("button");
   downloadAllButton.setAttribute("id", "download-all");

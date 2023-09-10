@@ -1,6 +1,7 @@
 function sortBySelectComponent(options /* options: string[] */, changeFunc) {
     var sortDiv = document.createElement("div");
-    sortDiv.setAttribute("class", "col-2")
+    // sortDiv.setAttribute("class", "col");
+    sortDiv.setAttribute("style", "max-width: 10rem;");
     var sort = document.createElement("select");
     sort.setAttribute("class", "form-select");
     options.forEach((option, i) => {
