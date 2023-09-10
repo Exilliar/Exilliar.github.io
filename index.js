@@ -33,12 +33,7 @@ function addNewQr(e) {
   makeQrCode(url, title, color);
 }
 function makeDownloadAllButton() {
-  var downloadAllButton = document.createElement("button");
-  downloadAllButton.setAttribute("id", "download-all");
-  downloadAllButton.setAttribute("class", "btn btn-primary");
-  downloadAllButton.setAttribute("type", " button");
-  var downloadAllText = document.createTextNode("Download all");
-  downloadAllButton.appendChild(downloadAllText);
+  var downloadAllButton = downloadAllButtonComponent();
   document
     .getElementById("download-all-container")
     .appendChild(downloadAllButton);
@@ -46,6 +41,7 @@ function makeDownloadAllButton() {
   downloadAllButton.addEventListener("click", function () {
     for (let i = 1; i < qrLocation; i++) {
       const button = document.getElementById(`qr-button-${i}`);
+      console.log("button", button)
       button.click();
     }
   });
@@ -56,10 +52,7 @@ function makeQrCode(url, title, color) {
     makeDownloadAllButton();
   }
 
-  var card = document.createElement("div");
-  card.setAttribute("class", "card");
-  card.setAttribute("id", `qrcode-${qrLocation}`);
-  card.setAttribute("style", "width: 18rem;");
+  var card = QRCardComponent();
   document.getElementById("qr-list").appendChild(card);
 
   var qrcode = new QRCode(card, {
@@ -72,38 +65,8 @@ function makeQrCode(url, title, color) {
     correctLevel: QRCode.CorrectLevel.H,
   });
 
-  var cardBody = document.createElement("div");
-  cardBody.setAttribute("class", "card-body");
+  var cardBody = QRCardBodyComponent(card, title, url);
   card.appendChild(cardBody);
-
-  var titleElement = document.createElement("h5");
-  titleElement.setAttribute("class", "card-title");
-  titleElement.appendChild(document.createTextNode(title));
-  cardBody.appendChild(titleElement);
-
-  var bodyElement = document.createElement("p");
-  bodyElement.setAttribute("class", "card-text");
-  bodyElement.appendChild(document.createTextNode(url));
-  cardBody.appendChild(bodyElement);
-
-  var button = document.createElement("button");
-  const currentQrLocation = qrLocation;
-  button.setAttribute("id", `qr-button-${qrLocation}`);
-  button.setAttribute("class", "btn btn-primary");
-  button.setAttribute("type", " button");
-  button.addEventListener("click", function () {
-    console.log("card.children:", card.children);
-    var src = card.children[1].getAttribute("src");
-    var link = document.createElement("a");
-    link.href = src;
-    link.download = `${title}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
-  var text = document.createTextNode("Download");
-  button.appendChild(text);
-  cardBody.appendChild(button);
 
   qrLocation++;
 }
