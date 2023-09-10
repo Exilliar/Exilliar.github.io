@@ -1,4 +1,4 @@
-function sortBySelectComponent(options /* options: string[] */) {
+function sortBySelectComponent(options /* options: string[] */, changeFunc) {
     var sortDiv = document.createElement("div");
     sortDiv.setAttribute("class", "col-2")
     var sort = document.createElement("select");
@@ -12,6 +12,8 @@ function sortBySelectComponent(options /* options: string[] */) {
         o.appendChild(document.createTextNode(option));
         sort.appendChild(o);
     });
+
+    sort.addEventListener("change", changeFunc);
 
     sortDiv.appendChild(sort);
 

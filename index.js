@@ -14,7 +14,10 @@ if (singleForm.attachEvent) {
 }
 
 var qrLocation = 1;
-const sortByOptions = ["Oldest first", "Newest first", "Name"]
+const sortByOptions = ["Oldest first", "Newest first", "Name"];
+var sortSelected = 0;
+
+var cards = []; // { title: string; url: string; color: string; timeAdded: DateTime; card: HTMLElement }[]
 
 function batchUpload(e) {
   if (e.preventDefault) e.preventDefault();
@@ -42,7 +45,6 @@ function batchUpload(e) {
 
 function addNewQr(e) {
   if (e.preventDefault) e.preventDefault();
-  console.log("e:", e)
   var color = document.getElementById("qr-color").value;
   var url = document.getElementById("site-url").value;
   var title = document.getElementById("site-title").value;
@@ -57,9 +59,10 @@ function makeControlsRow() {
   var downloadAllButton = downloadAllButtonComponent();
   container.appendChild(downloadAllButton);
 
-  var sortBySelect = sortBySelectComponent(sortByOptions);
+  var sortBySelect = sortBySelectComponent(sortByOptions, changeSort);
   container.appendChild(sortBySelect);
 }
+
 function makeQrCode(url, title, color) {
   var downloadAll = document.getElementById("download-all");
   if (downloadAll === null) {
@@ -82,5 +85,14 @@ function makeQrCode(url, title, color) {
   var cardBody = QRCardBodyComponent(card, title, url);
   card.appendChild(cardBody);
 
+  cards.push({
+    title,
+    url,
+    color,
+    timeAdded: Date.now(),
+    card
+  });
+
+  sortCards(sortSelected);
   qrLocation++;
 }
