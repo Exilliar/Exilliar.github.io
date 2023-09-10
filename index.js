@@ -1,11 +1,24 @@
-document.getElementById("submit-button").addEventListener("click", addNewQr);
-document
-  .getElementById("submit-batch-button")
-  .addEventListener("click", batchUpload);
+var batchForm = document.getElementById("batch-qr-form");
+
+if (batchForm.attachEvent) {
+  batchForm.attachEvent("submit", batchUpload);
+} else {
+  batchForm.addEventListener("submit", batchUpload);
+}
+
+var singleForm = document.getElementById("single-qr-code-form");
+if (singleForm.attachEvent) {
+  singleForm.attachEvent("submit", addNewQr);
+} else {
+  singleForm.addEventListener("submit", addNewQr);
+}
+
 var qrLocation = 1;
 const sortByOptions = ["Oldest first", "Newest first", "Name"]
 
 function batchUpload(e) {
+  if (e.preventDefault) e.preventDefault();
+
   var file = document.getElementById("batch-upload");
   var input = file.files[0];
   const reader = new FileReader();
@@ -23,14 +36,19 @@ function batchUpload(e) {
     });
   };
   reader.readAsText(input);
+
+  return false;
 }
 
 function addNewQr(e) {
+  if (e.preventDefault) e.preventDefault();
+  console.log("e:", e)
   var color = document.getElementById("qr-color").value;
   var url = document.getElementById("site-url").value;
   var title = document.getElementById("site-title").value;
 
   makeQrCode(url, title, color);
+  return false;
 }
 function makeControlsRow() {
   var container = document

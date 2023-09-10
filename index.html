@@ -13,7 +13,7 @@
   <body class="container mt-5">
     <div id="qrcode-2"></div>
     <div class="row">
-      <div class="form">
+      <form class="form" id="single-qr-code-form">
         <h4>Single QR Code</h4>
         <div class="label-input">
           <label for="site-title" class="form-label">Title</label>
@@ -25,21 +25,21 @@
         </div>
         <div class="label-input">
           <label for="qr-color" class="form-label">Color</label>
-          <input id="qr-color" type="color" class="form-control form-control-lg" />
+          <input id="qr-color" type="color" class="form-control form-control-lg form-control-color" />
         </div>
-        <button type="button" class="btn btn-primary mt-2" id="submit-button">
+        <button type="submit" class="btn btn-primary mt-2" id="submit-button">
           submit
         </button>
-      </div>
-      <div class="form col">
+      </form>
+      <form class="form col" id="batch-qr-form">
         <h4>Batch upload</h4>
         <p>Example csv: <a href="./example.csv" download>example.csv</a></p>
         <div class="label-input">
           <label for="batch-upload" class="form-label">Csv file</label>
           <input type="file" id="batch-upload" class="form-control" />
         </div>
-        <button type="button" class="btn btn-primary mt-2" id="submit-batch-button">submit</button>
-      </div>
+        <button type="submit" class="btn btn-primary mt-2" id="submit-batch-button">submit</button>
+      </form>
     </div>
     <div id="controls-container" class="row mb-4 mt-4"></div>
     <div id="qr-list" class="qr-list"></div>
