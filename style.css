@@ -1,0 +1,46 @@
+.qr-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+  justify-content: space-around;
+}
+.qr-value {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 45%;
+  min-width: 5.625rem;
+  height: 20rem;
+}
+.label-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.download-all-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 400px) {
+  .top-page {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .top-page {
+    display: flex;
+    justify-content: space-between;
+  }
+}
