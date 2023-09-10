@@ -3,7 +3,7 @@ document
   .getElementById("submit-batch-button")
   .addEventListener("click", batchUpload);
 var qrLocation = 1;
-var allSources = [];
+const sortByOptions = ["Oldest first", "Newest first", "Name"]
 
 function batchUpload(e) {
   var file = document.getElementById("batch-upload");
@@ -32,24 +32,20 @@ function addNewQr(e) {
 
   makeQrCode(url, title, color);
 }
-function makeDownloadAllButton() {
-  var downloadAllButton = downloadAllButtonComponent();
-  document
-    .getElementById("download-all-container")
-    .appendChild(downloadAllButton);
+function makeControlsRow() {
+  var container = document
+  .getElementById("controls-container");
 
-  downloadAllButton.addEventListener("click", function () {
-    for (let i = 1; i < qrLocation; i++) {
-      const button = document.getElementById(`qr-button-${i}`);
-      console.log("button", button)
-      button.click();
-    }
-  });
+  var downloadAllButton = downloadAllButtonComponent();
+  container.appendChild(downloadAllButton);
+
+  var sortBySelect = sortBySelectComponent(sortByOptions);
+  container.appendChild(sortBySelect);
 }
 function makeQrCode(url, title, color) {
   var downloadAll = document.getElementById("download-all");
   if (downloadAll === null) {
-    makeDownloadAllButton();
+    makeControlsRow();
   }
 
   var card = QRCardComponent();
