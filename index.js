@@ -37,6 +37,8 @@ function batchUpload(e) {
         makeQrCode(url, title, color);
       }
     });
+
+    sortCards(sortSelected);
   };
   reader.readAsText(input);
 
@@ -50,6 +52,8 @@ function addNewQr(e) {
   var title = document.getElementById("site-title").value;
 
   makeQrCode(url, title, color);
+
+  sortCards(sortSelected);
   return false;
 }
 function makeControlsRow() {
@@ -93,6 +97,5 @@ function makeQrCode(url, title, color) {
     card
   });
 
-  sortCards(sortSelected);
   qrLocation++;
 }
